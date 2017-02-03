@@ -98,6 +98,27 @@ test('http hash retrieves fixed route', function (assert) {
 
 });
 
+test('http hash discards empty segments', function (assert) {
+    // Arrange
+    function routeHandler() {}
+
+    var hash = HttpHash();
+    hash.set('/test', routeHandler);
+
+    var expectedParams = {};
+
+    // Act
+    var result = hash.get('//test');
+
+    // Assert
+    assert.strictEqual(result.handler, routeHandler);
+    assert.strictEqual(result.src, '/test');
+    assert.strictEqual(result.splat, null);
+    assert.deepEqual(result.params, expectedParams);
+    assert.end();
+
+});
+
 test('http hash retrieves variable route', function (assert) {
     // Arrange
     function routeHandler() {}
